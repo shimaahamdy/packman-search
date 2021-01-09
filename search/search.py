@@ -87,7 +87,43 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
+    
+    #dfs algorithm (iterative dfs):
+    #1-Created a stack of nodes and visited array (used set to keep visited nodes).
+    #2-Insert the root in the stack and mark it visited.
+    #3-loop over stack till it become empty:
+             #Pop the element from the stack.
+             #check if it is goal ---> return path
+             #get childrens and unvisited node of current node
+             #mark the node and insert it in the stack.
+
+    # 1
+    s=util.Stack()  
+    vis = set() 
+    # 2
+    root_node = problem.getStartState()    #startstate return x,y only not like getsuccessors 
+    s.push((root_node,[]))                 #push node and path that we will take 
+    # we need list to attach to stack to removed invaild pathes easily when we return
+    vis.add(root_node)
+     
+    # 3
+    while not s.isEmpty():
+        current_node,path = s.pop()
+        
+        if problem.isGoalState(current_node):
+            return path
+        
+        for child_node, next_dir, cost in problem.getSuccessors(current_node):
+            if child_node not in vis:
+                vis.add(child_node)
+                s.push((child_node,path + [next_dir]))
+                
+              
+                
     util.raiseNotDefined()
+    
+
+    
 
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
