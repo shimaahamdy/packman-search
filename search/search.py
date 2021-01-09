@@ -137,7 +137,7 @@ def breadthFirstSearch(problem):
              #Pop the element from the queue.
              #check if it is goal ---> return path
              #get childrens and unvisited node of current node
-             #mark the children nodes and insert it in the stack.
+             #mark the children nodes and insert it in the queue.
 
     #1
     q=util.Queue()
@@ -167,6 +167,39 @@ def breadthFirstSearch(problem):
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
+    #UFC algorithm (use a priority queue to trace low cost first):
+    #1-Created a priority queue of nodes and visited array to trck parents nodes that we traced
+    #2-Insert the root in the priority queue  with cost=0 and mark it visited.
+    #3-loop over priority queue till it become empty:
+             #Pop the element with highst prioity from the priority queue.
+             #check if it wasnt visited before, mark it visited
+             #check if it is goal ---> return path
+             #get childrens  of current node
+             #insert it in the queue with cost.
+    
+    #1
+    pq = util.PriorityQueue()
+    vis = set()
+    #2
+    root_node = problem.getStartState()
+    pq.push((root_node,[],0),0)  # the implmented priority queue take proirty as individual item so 
+                                 # send cost twice one as actual cost and one used in sorting
+    while not pq.isEmpty():
+
+        current_node,path,parent_cost=pq.pop()
+        if current_node not in vis:
+
+            vis.add(current_node)
+            
+            if problem.isGoalState(current_node):
+                return path
+            
+            for child_node, next_dir, cost in problem.getSuccessors(current_node):
+                pq.push((child_node,path+[next_dir],parent_cost+cost),parent_cost+cost)
+
+
+
+
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
