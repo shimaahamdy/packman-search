@@ -95,7 +95,7 @@ def depthFirstSearch(problem):
              #Pop the element from the stack.
              #check if it is goal ---> return path
              #get childrens and unvisited node of current node
-             #mark the node and insert it in the stack.
+             #mark the children nodes and insert it in the stack.
 
     # 1
     s=util.Stack()  
@@ -128,7 +128,41 @@ def depthFirstSearch(problem):
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
+
+      
+    #bfs algorithm (similar to dfs but use queue to trace first insert first):
+    #1-Created a queue of nodes and visited array (used set to keep visited nodes).
+    #2-Insert the root in the queue and mark it visited.
+    #3-loop over queue till it become empty:
+             #Pop the element from the queue.
+             #check if it is goal ---> return path
+             #get childrens and unvisited node of current node
+             #mark the children nodes and insert it in the stack.
+
+    #1
+    q=util.Queue()
+    vis = set()
+
+    #2
+    root_node = problem.getStartState()
+    q.push((root_node,[]))
+    vis.add(root_node)
+
+    # 3
+    while not q.isEmpty():
+        current_node,path = q.pop()
+        
+        if problem.isGoalState(current_node):
+            return path
+        
+        for child_node, next_dir, cost in problem.getSuccessors(current_node):
+            if child_node not in vis:
+                vis.add(child_node)
+                q.push((child_node,path + [next_dir]))
+
     util.raiseNotDefined()
+
+    
 
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
