@@ -184,6 +184,7 @@ def uniformCostSearch(problem):
     root_node = problem.getStartState()
     pq.push((root_node,[],0),0)  # the implmented priority queue take proirty as individual item so 
                                  # send cost twice one as actual cost and one used in sorting
+    #3
     while not pq.isEmpty():
 
         current_node,path,parent_cost=pq.pop()
@@ -212,6 +213,38 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
+    #A* algorithm (same as UCS but priority depend on both heurstic and cost functions):
+    #1-Created a priority queue of nodes and visited array to trck parents nodes that we traced
+    #2-Insert the root in the priority queue  with cost=0,priority=0 and mark it visited.
+    #3-loop over priority queue till it become empty:
+             #Pop the element with highst prioity from the priority queue.
+             #check if it wasnt visited before, mark it visited
+             #check if it is goal ---> return path
+             #get childrens  of current node
+             #insert it in the queue with cost and priority of heurstic and cost values
+    
+    #1
+    pq = util.PriorityQueue()
+    vis = set()
+    #2
+    root_node = problem.getStartState()
+    pq.push((root_node,[],0),0)  # the implmented priority queue take proirty as individual item so 
+                                 # send cost twice one as actual cost and one used in sorting
+    #3
+    while not pq.isEmpty():
+
+        current_node,path,parent_cost=pq.pop()
+        if current_node not in vis:
+
+            vis.add(current_node)
+            
+            if problem.isGoalState(current_node):
+                return path
+            
+            for child_node, next_dir, cost in problem.getSuccessors(current_node):
+                new_priority = heuristic(child_node,problem)+parent_cost+cost
+                pq.push((child_node,path+[next_dir],parent_cost+cost),new_priority)
+
     util.raiseNotDefined()
 
 
