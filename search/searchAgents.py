@@ -398,7 +398,39 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+
+    # in heurstic, we use manhaten distance 
+    # from the position we are we want to callcuate the minimum value to reach goal (all 4 corners visited)
+    # so, we calc minimum distance from position to the corners and choose closet corner 
+    # and then from the new corner we choose, we repeat operation to the rest of corners and increse 
+    #distance till all 4 corners visited and goal achived
+
+    vis = state[1]                   #visited corners
+    not_vis = []                     #not visited corners
+    current_node = state[0]          #current position
+    heurstic_val = 0                 #heurstic value
+
+    # fill not visited corners array
+    for corner in corners:
+        if corner not in vis:
+            not_vis.append(corner)
+    
+    #loop over corners that not reached yet
+    while not_vis:
+
+        dis= []             #to save all distances from position to corners
+
+        #loop in corners to calc dis
+        for corner in not_vis:
+            manhaten_dis = util.manhattanDistance(current_node,corner)  #cal manhaten distance from position to corner
+            dis.append((manhaten_dis,corner))                     #add it to dis
+        
+        #aftr loop finish we choose minimun closet corner
+        min_dis,corner = min(dis)
+        current_node=corner        #update current positon to new corner
+        not_vis.remove(corner)     #remove corner that we choose 
+        heurstic_val += min_dis    #update heurstic vaule to the distance we choose
+    return heurstic_val 
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
