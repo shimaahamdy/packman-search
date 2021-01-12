@@ -115,7 +115,7 @@ def depthFirstSearch(problem):
         
         for child_node, next_dir, cost in problem.getSuccessors(current_node):
             if child_node not in vis:
-                vis.appeand(child_node)
+                vis.append(child_node)
                 s.push((child_node,path + [next_dir]))
                 
               
@@ -193,7 +193,7 @@ def uniformCostSearch(problem):
         current_node,path,parent_cost=pq.pop()
         if current_node not in vis:
 
-            vis.appeand(current_node)
+            vis.append(current_node)
             
             if problem.isGoalState(current_node):
                 return path
