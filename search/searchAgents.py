@@ -524,7 +524,24 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    return 0
+    
+    #heurstic is the real distance between pacman position and estimated closest food
+    #real distance is the maze distance, there are implmented one in the project i used
+    #mazeDistance (pos1,pos2,gamestate)
+
+    food_cordantes = foodGrid.asList()
+    heurstic = 0
+    
+    #no food left
+    if len(food_cordantes)==0:
+        return 0
+    
+    closest_food = get_closest_food(position,food_cordantes)
+    game_state= problem.startingGameState
+
+    heurstic = mazeDistance(closest_food,position,game_state)
+    return heurstic   
+     
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
@@ -610,3 +627,27 @@ def mazeDistance(point1, point2, gameState):
     assert not walls[x2][y2], 'point2 is a wall: ' + str(point2)
     prob = PositionSearchProblem(gameState, start=point1, goal=point2, warn=False, visualize=False)
     return len(search.bfs(prob))
+
+#fucntion implmented to get closest food position to current position
+def get_closest_food (current_pos, food_cordinates):
+    #no food in grid left
+    if len(food_cordinates) == 0:
+        return None
+    
+    #set closest food to the first one in list
+    #calc distance with manhattan distance
+    closest_food = food_cordinates[0]
+    dis = manhattanDistance(current_pos, closest_food)
+    #loop on cordinates of food to get minimum one that close to current position
+    for food_pos in food_cordinates[1:]:
+        new_dis = manhattanDistance(current_pos, food_pos)
+        if new_dis < dis:
+            dis = new_dis
+            closest_food = food_pos
+  
+    return closest_food
+
+
+#return manhaten distance between 2 points
+def manhattanDistance (pointA, pointB):
+    return abs(pointA[0] - pointB[0]) + abs(pointA[1] - pointB[1])
