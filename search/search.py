@@ -89,7 +89,7 @@ def depthFirstSearch(problem):
     "*** YOUR CODE HERE ***"
     
     #dfs algorithm (iterative dfs):
-    #1-Created a stack of nodes and visited array (used set to keep visited nodes).
+    #1-Created a stack of nodes and visited array 
     #2-Insert the root in the stack and mark it visited.
     #3-loop over stack till it become empty:
              #Pop the element from the stack.
@@ -99,12 +99,12 @@ def depthFirstSearch(problem):
 
     # 1
     s=util.Stack()  
-    vis = set() 
+    vis = []
     # 2
     root_node = problem.getStartState()    #startstate return x,y only not like getsuccessors 
     s.push((root_node,[]))                 #push node and path that we will take 
     # we need list to attach to stack to removed invaild pathes easily when we return
-    vis.add(root_node)
+    vis.append(root_node)
      
     # 3
     while not s.isEmpty():
@@ -115,7 +115,7 @@ def depthFirstSearch(problem):
         
         for child_node, next_dir, cost in problem.getSuccessors(current_node):
             if child_node not in vis:
-                vis.add(child_node)
+                vis.appeand(child_node)
                 s.push((child_node,path + [next_dir]))
                 
               
@@ -131,7 +131,7 @@ def breadthFirstSearch(problem):
 
       
     #bfs algorithm (similar to dfs but use queue to trace first insert first):
-    #1-Created a queue of nodes and visited array (used set to keep visited nodes).
+    #1-Created a queue of nodes and visited array 
     #2-Insert the root in the queue and mark it visited.
     #3-loop over queue till it become empty:
              #Pop the element from the queue.
@@ -141,12 +141,15 @@ def breadthFirstSearch(problem):
 
     #1
     q=util.Queue()
-    vis = set()
+    vis = []  
+
+    #note, i used first a set to track visited nodes like dfs but in search corner broblem
+    #i use a list express state not just postion so i have to changed to a list 
 
     #2
     root_node = problem.getStartState()
     q.push((root_node,[]))
-    vis.add(root_node)
+    vis.append(root_node)
 
     # 3
     while not q.isEmpty():
@@ -157,7 +160,7 @@ def breadthFirstSearch(problem):
         
         for child_node, next_dir, cost in problem.getSuccessors(current_node):
             if child_node not in vis:
-                vis.add(child_node)
+                vis.append(child_node)
                 q.push((child_node,path + [next_dir]))
 
     util.raiseNotDefined()
@@ -179,7 +182,7 @@ def uniformCostSearch(problem):
     
     #1
     pq = util.PriorityQueue()
-    vis = set()
+    vis = []
     #2
     root_node = problem.getStartState()
     pq.push((root_node,[],0),0)  # the implmented priority queue take proirty as individual item so 
@@ -190,7 +193,7 @@ def uniformCostSearch(problem):
         current_node,path,parent_cost=pq.pop()
         if current_node not in vis:
 
-            vis.add(current_node)
+            vis.appeand(current_node)
             
             if problem.isGoalState(current_node):
                 return path
@@ -225,7 +228,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     
     #1
     pq = util.PriorityQueue()
-    vis = set()
+    vis = []
     #2
     root_node = problem.getStartState()
     pq.push((root_node,[],0),0)  # the implmented priority queue take proirty as individual item so 
@@ -236,7 +239,7 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         current_node,path,parent_cost=pq.pop()
         if current_node not in vis:
 
-            vis.add(current_node)
+            vis.append(current_node)
             
             if problem.isGoalState(current_node):
                 return path

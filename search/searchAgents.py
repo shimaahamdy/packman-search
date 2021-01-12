@@ -295,6 +295,9 @@ class CornersProblem(search.SearchProblem):
         space)
         """
         "*** YOUR CODE HERE ***"
+        #return the positon of pacman, list of all visited corners 
+        #at the start of game list of visited corners is empty
+        return (self.startingPosition,[])
         util.raiseNotDefined()
 
     def isGoalState(self, state):
@@ -302,6 +305,22 @@ class CornersProblem(search.SearchProblem):
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
+        #it is goal if 
+        #state contain 2 parts : state[0]--->current node
+        #                        state[1]--->array  contain corners that has been visited
+        current_node = state[0]
+        vis = state[1]             #visited corners 
+
+        #check if we set on corner and that corner not visited before and length of visited corner 
+        # = 4 (all 4 corners have been visited) so for sure it is goal
+        if current_node in self.corners:
+            if current_node not in vis:
+                vis.append(node)
+            return len(vis)==4
+        return False
+            
+
+
         util.raiseNotDefined()
 
     def getSuccessors(self, state):
@@ -316,6 +335,8 @@ class CornersProblem(search.SearchProblem):
         """
 
         successors = []
+        x,y = state[0]                        #get current position
+        vis = state[1]                      #get visited corners
         for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
             # Add a successor state to the successor list if the action is legal
             # Here's a code snippet for figuring out whether a new position hits a wall:
@@ -325,6 +346,23 @@ class CornersProblem(search.SearchProblem):
             #   hitsWall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
+            
+ 
+            dx, dy = Actions.directionToVector(action)  #change direction to x,y cordinate
+            nextx, nexty = int(x + dx), int(y + dy)     #get new cordinates of new action
+            hitsWall = self.walls[nextx][nexty]         #check if new positon is wall or not
+
+            successor_node = (nextx,nexty)              #define the successor_node position
+            successor_vis = list(vis)
+            #if the new position is not wall and if successor node is a corner and not visited yet 
+            #add it to succesor_vis corners
+            if not hitsWall:
+                if successor_node in self.corners:
+                    if successor_node not in successor_vis:
+                        successor_vis.append(successor_node)
+                success=((successor_node,successor_vis),action,1)
+                successors.append(success)
+
 
         self._expanded += 1 # DO NOT CHANGE
         return successors
